@@ -1,0 +1,28 @@
+# Checkpoints: keep only the latest release weights in git.
+checkpoints/*
+!checkpoints/unet_plus_deepliif/
+checkpoints/unet_plus_deepliif/*
+!checkpoints/unet_plus_deepliif/latest/
+!checkpoints/unet_plus_deepliif/latest/**
+
+# macOS and editor metadata
+.DS_Store
+**/.DS_Store
+.idea/
+
+# Python cache files
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Model weights and generated outputs
+*.pt
+*.ckpt
+*_pred_*/
+web/
+results/
+
+# Local scratch/debug files
+1.py
+=*
