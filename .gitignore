@@ -1,9 +1,5 @@
-# Checkpoints: keep only the latest release weights in git.
-checkpoints/*
-!checkpoints/unet_plus_deepliif/
-checkpoints/unet_plus_deepliif/*
-!checkpoints/unet_plus_deepliif/latest/
-!checkpoints/unet_plus_deepliif/latest/**
+# Checkpoints and model weights are distributed via GitHub Releases.
+checkpoints/
 
 # macOS and editor metadata
 .DS_Store
@@ -17,6 +13,7 @@ __pycache__/
 *$py.class
 
 # Model weights and generated outputs
+*.pth
 *.pt
 *.ckpt
 *_pred_*/
