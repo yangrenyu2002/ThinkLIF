@@ -4,7 +4,7 @@ ThinkLIF is an auxiliary-representation-guided framework for nuclear segmentatio
 
 The model first generates four stain-like auxiliary representations from an IHC input image and then concatenates these auxiliary outputs with the original IHC image for final nuclear segmentation. The segmentation head uses ConvNeXt-style multi-scale refinement, GatedFusion, and a FiLM-based AuxSkipAdapter.
 
-This repository contains the PyTorch implementation used for the ThinkLIF experiments.
+This repository contains the PyTorch implementation, environment specification, inference instructions, and pretrained DeepLIIF weights used for the ThinkLIF experiments.
 
 ## Overview
 
@@ -59,6 +59,10 @@ conda activate deepliif_env
 ```
 
 If your CUDA/PyTorch version differs from the environment file, install a compatible PyTorch build for your system first, then install the remaining Python dependencies listed in `environment.yaml`.
+
+## Environment Details
+
+The experiments were conducted with Python 3.9, PyTorch 2.8.0, torchvision 0.23.0, CUDA 12.x, OpenCV 4.8.1, scikit-image 0.21.0, SciPy 1.10.1, NumPy 1.24.4, and Pillow 10.4.0. The complete conda environment used in our experiments is provided in `environment.yaml`.
 
 ## Data Format
 
@@ -190,6 +194,37 @@ Typical output files include:
 - `*_SegOverlaid.png`: overlay visualization after post-processing
 - `*_SegRefined.png`: post-processed segmentation result
 
+## Pretrained Weights
+
+The pretrained ThinkLIF weights trained on the DeepLIIF dataset are available from GitHub Releases:
+
+- [ThinkLIF_pretrained_deepliif.zip](https://github.com/yangrenyu2002/ThinkLIF/releases/download/pretrained-weights-v1/ThinkLIF_pretrained_deepliif.zip)
+
+After downloading and extracting the archive into the repository root, the expected layout is:
+
+```text
+checkpoints/
++-- thinklif_deepliif/
+    +-- latest/
+        +-- train_opt.txt
+        +-- latest_net_G1.pth
+        +-- latest_net_G2.pth
+        +-- latest_net_G3.pth
+        +-- latest_net_G4.pth
+        +-- latest_net_S.pth
+```
+
+Run inference with the pretrained DeepLIIF weights:
+
+```bash
+python test.py \
+  --dataroot /path/to/Dataset \
+  --name thinklif_deepliif \
+  --checkpoints_dir ./checkpoints \
+  --gpu_ids 0 \
+  --num_test 10000
+```
+
 ## Metrics and Post-processing
 
 `test.py` calls the post-processing pipeline in `Model/metrics/PostProcess_Metrics.py` after inference. The metric utilities support pixel-level and instance-level evaluation, including:
@@ -225,12 +260,7 @@ The main experimental setting used:
 - Segmentation head: `unet_plus`
 - Auxiliary modality loss weights: `[0.25, 0.25, 0.25, 0.25]`
 
-For a released repository, we recommend providing:
-
-- Dataset split lists
-- Exact checkpoint files or download links
-- Full training commands
-- Python/CUDA/PyTorch version information
+This repository provides the source code, environment file, data-format description, training command, inference command, evaluation utilities, and pretrained DeepLIIF weight download link required to reproduce the reported workflow.
 
 ## Citation
 
@@ -247,4 +277,4 @@ If you use this code, please cite the associated manuscript once available.
 
 ## License
 
-Please add the appropriate license before public release.
+This project is released under the MIT License. See the `LICENSE` file for details.
